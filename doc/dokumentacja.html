@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Dokumentacja Projektu - Labirynt Matematyczny</title>
+    <style>
+        /* Styl minimalny - tylko dla czytelności */
+        body {
+            font-family: "Times New Roman", Times, serif;
+            color: #000;
+            background-color: #fff;
+            max-width: 800px;
+            margin: 20px auto;
+            line-height: 1.4;
+        }
+        h1, h2, h3 {
+            font-family: Arial, Helvetica, sans-serif;
+            color: #000;
+        }
+        h1 { border-bottom: 2px solid #000; padding-bottom: 10px; }
+        h2 { border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-top: 30px; }
+        code {
+            font-family: "Courier New", Courier, monospace;
+            background-color: #f0f0f0;
+            padding: 2px;
+        }
+        .method-desc {
+            margin-bottom: 15px;
+            margin-left: 20px;
+        }
+        hr { border: 0; border-top: 1px solid #000; margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+    <h1>DOKUMENTACJA PROJEKTU</h1>
+    
+    <p>
+        <strong>Nazwa projektu:</strong> Labirynt Matematyczny<br>
+        <strong>Technologia:</strong> C# .NET 6.0 (WPF)<br>
+        <strong>Autor:</strong> Tymon Joszczak<br>
+        <strong>Data:</strong> 2026
+    </p>
+
+    <hr>
+
+    <h2>1. OPIS GRY I INSTRUKCJA</h2>
+    <p>
+        Gracz musi przejść labirynt, gdzie na końcu czeka na niego zagadka matematyczna, którą musi rozwiązać, by przejść do następnego poziomu. Z kolejnymi poziomami trudność zarówno labiryntu i zadań matematycznych wzrasta. Gra kończy się w momencie rozwiązania ostatniej zagadki i znalezienia wyjścia.
+    </p>
+
+    <h3>Sterowanie (Klawiatura):</h3>
+    <ul>
+        <li><strong>W / S</strong> - Ruch góra / dół</li>
+        <li><strong>A / D</strong> - Ruch lewo / prawo</li>
+        <li><strong>ESC</strong> - Pauza / Wyjście do menu</li>
+    </ul>
+
+    <h3>Mechanika gry:</h3>
+    <ul>
+        <li>Limit czasu: 60 sekund na poziom.</li>
+        <li>Mgła wojny (Fog of War): Gracz widzi tylko ograniczony obszar wokół siebie.</li>
+        <li>Poziomy: 5 map o rosnącym poziomie trudności.</li>
+    </ul>
+
+    <hr>
+
+    <h2>2. DOKUMENTACJA API (STRUKTURA KODU)</h2>
+
+    <h3>Klasa: MainWindow.xaml.cs</h3>
+    <p>Główna klasa okna aplikacji (View/Controller).</p>
+    
+    <div class="method-desc">
+        <strong>GameLoopTimer_Tick(object sender, EventArgs e)</strong><br>
+        <em>Opis:</em> Główna pętla gry (uruchamiana ok. 60 razy na sekundę). Obsługuje ruch gracza, wykrywanie kolizji ze ścianami (metoda IntersectsWith) oraz odświeżanie grafiki.
+    </div>
+
+    <div class="method-desc">
+        <strong>UpdateFogOfWar()</strong><br>
+        <em>Opis:</em> Oblicza odległość euklidesową między środkiem gracza a każdym elementem mapy. Jeśli odległość jest mniejsza niż <code>viewRadius</code>, element staje się widoczny.
+    </div>
+
+    <h3>Klasa: Services/LevelManager.cs</h3>
+    <p>Odpowiada za logikę wczytywania poziomów.</p>
+
+    <div class="method-desc">
+        <strong>LoadLevel(int levelIndex)</strong><br>
+        <em>Opis:</em> Wczytuje plik tekstowy z folderu Assets. Parsuje znaki:<br>
+        - <code>#</code> : Ściana (Wall)<br>
+        - <code>S</code> : Start (Player Start)<br>
+        - <code>E</code> : Meta (EndZone)<br>
+        Zwraca <code>true</code> jeśli wczytywanie się powiodło.
+    </div>
+
+    <h3>Klasa: Services/QuizManager.cs</h3>
+    <p>Odpowiada za generowanie zagadek matematycznych.</p>
+
+    <div class="method-desc">
+        <strong>GenerateQuestion(int levelIndex)</strong><br>
+        <em>Opis:</em> Generuje obiekt <code>MathQuestion</code> dostosowany do poziomu trudności:<br>
+        - Poziom 0-1: Dodawanie/Odejmowanie<br>
+        - Poziom 2: Mnożenie<br>
+        - Poziom 3+: Działania łączone (kolejność wykonywania działań)
+    </div>
+
+    <hr>
+
+    <h2>3. STRUKTURA PLIKÓW (SOLUCJA)</h2>
+    <pre>
+[Folder Główny]
+ ├── Assets/
+ │    ├── Images/ (Tekstury: player.png, wall.png...)
+ │    └── Levels/ (Mapy: level1.txt...)
+ ├── Models/
+ │    ├── Player.cs
+ │    ├── Wall.cs
+ │    └── MathQuestion.cs
+ ├── Services/
+ │    ├── LevelManager.cs
+ │    └── QuizManager.cs
+ ├── MainWindow.xaml (Interfejs)
+ └── MainWindow.xaml.cs (Logika)
+    </pre>
+
+</body>
+</html>
